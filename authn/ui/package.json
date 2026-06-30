@@ -1,0 +1,39 @@
+{
+  "name": "@faber-numeris/authn-api",
+  "version": "0.0.1",
+  "private": false,
+  "description": "Type-safe API client for the Luciole Authentication Service",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./models": {
+      "types": "./dist/models/index.d.ts",
+      "import": "./dist/models/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "src"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "clean": "rm -rf dist",
+    "build": "npm run clean && tsc",
+    "prepublishOnly": "npm run build"
+  },
+  "dependencies": {
+    "zod": "^3.24.0"
+  },
+  "devDependencies": {
+    "@faker-js/faker": "^9.6.0",
+    "msw": "^2.7.0",
+    "typescript": "^5.8.0"
+  }
+}

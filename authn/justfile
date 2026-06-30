@@ -1,0 +1,24 @@
+# Generate Go and TypeScript stubs from the OpenAPI spec
+
+oapi_codegen_version := "v2.7.1"
+
+oapi_codegen_configs := "models server spec"
+
+generate-openapi-stubs:
+	for config in {{oapi_codegen_configs}}; do \
+		go run github.com/oapi-codegen/oapi-codegen/v2/cmd/oapi-codegen@{{oapi_codegen_version}} \
+			--config ".oapi-codegen.$config.yaml" \
+			openapi.yaml; \
+	done
+
+	npx orval --config orval.config.mjs
+	npm --prefix ui run build
+
+# Publish the npm package to the @faber-numeris org
+publish-ui:
+	npm --prefix ui publish
+
+# Sync the Bruno collection with the OpenAPI spec file using interactive diffs
+sync-api:
+	npx @sayedameer/bruno-openapi-sync -s spec/openapi.yaml -o "authn/tests/"
+
