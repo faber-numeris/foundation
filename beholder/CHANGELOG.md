@@ -46,3 +46,17 @@
 ### Feat
 
 - initial commit
+
+## beholder/v0.1.0 (2026-07-08)
+
+### Feat
+
+- initial commit
+
+### Fix
+
+- add go module declaration
+- remove account status from user
+- remove role related properties
+- add naming normalization to support Initialisms
+- generate zod v4 components
