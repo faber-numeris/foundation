@@ -1,5 +1,5 @@
 ---
-name: authn-sdk
+name: skill-authn
 description: >-
   Shared SDK for the Luciole Authentication Service API — spec-first
   codegen that produces Go stubs (oapi-codegen, chi-server) and a
