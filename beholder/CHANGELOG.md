@@ -47,6 +47,12 @@
 
 - initial commit
 
+## beholder/v0.1.2 (2026-07-08)
+
+### Fix
+
+- go mod version
+
 ## beholder/v0.1.1 (2026-07-08)
 
 ### Fix
