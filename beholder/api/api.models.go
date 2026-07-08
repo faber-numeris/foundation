@@ -76,24 +76,6 @@ func (e AuditEventType) Valid() bool {
 	}
 }
 
-// Defines values for Role.
-const (
-	RoleADMIN Role = "ADMIN"
-	RoleUSER  Role = "USER"
-)
-
-// Valid indicates whether the value is a known member of the Role enum.
-func (e Role) Valid() bool {
-	switch e {
-	case RoleADMIN:
-		return true
-	case RoleUSER:
-		return true
-	default:
-		return false
-	}
-}
-
 // Defines values for UserType.
 const (
 	UserTypeDEVICE         UserType = "DEVICE"
@@ -117,19 +99,19 @@ func (e UserType) Valid() bool {
 
 // Defines values for UserBaseType.
 const (
-	DEVICE         UserBaseType = "DEVICE"
-	SERVICEACCOUNT UserBaseType = "SERVICE_ACCOUNT"
-	USER           UserBaseType = "USER"
+	UserBaseTypeDEVICE         UserBaseType = "DEVICE"
+	UserBaseTypeSERVICEACCOUNT UserBaseType = "SERVICE_ACCOUNT"
+	UserBaseTypeUSER           UserBaseType = "USER"
 )
 
 // Valid indicates whether the value is a known member of the UserBaseType enum.
 func (e UserBaseType) Valid() bool {
 	switch e {
-	case DEVICE:
+	case UserBaseTypeDEVICE:
 		return true
-	case SERVICEACCOUNT:
+	case UserBaseTypeSERVICEACCOUNT:
 		return true
-	case USER:
+	case UserBaseTypeUSER:
 		return true
 	default:
 		return false
@@ -270,9 +252,6 @@ type RelationshipTupleList struct {
 	Items []RelationshipTuple `json:"items"`
 }
 
-// Role Coarse-grained role assigned to a principal. Fine-grained permissions are evaluated via the Authorization (OpenFGA) endpoints.
-type Role string
-
 // ULID Universally Unique Lexicographically Sortable Identifier
 type ULID = string
 
@@ -293,9 +272,6 @@ type User struct {
 	// Locale User's locale
 	Locale *string `json:"locale,omitempty"`
 
-	// Role Coarse-grained role assigned to a principal. Fine-grained permissions are evaluated via the Authorization (OpenFGA) endpoints.
-	Role *Role `json:"role,omitempty"`
-
 	// Status Lifecycle status of a user's account
 	Status *AccountStatus `json:"status,omitempty"`
 
@@ -309,15 +285,6 @@ type User struct {
 // UserType Principal type for extensibility
 type UserType string
 
-// UserAdminUpdateRequest defines model for UserAdminUpdateRequest.
-type UserAdminUpdateRequest struct {
-	// Role Coarse-grained role assigned to a principal. Fine-grained permissions are evaluated via the Authorization (OpenFGA) endpoints.
-	Role *Role `json:"role,omitempty"`
-
-	// Status Lifecycle status of a user's account
-	Status *AccountStatus `json:"status,omitempty"`
-}
-
 // UserBase defines model for UserBase.
 type UserBase struct {
 	// Email User's unique email address (login identifier)
@@ -325,9 +292,6 @@ type UserBase struct {
 
 	// ID Universally Unique Lexicographically Sortable Identifier
 	ID ULID `json:"id"`
-
-	// Role Coarse-grained role assigned to a principal. Fine-grained permissions are evaluated via the Authorization (OpenFGA) endpoints.
-	Role *Role `json:"role,omitempty"`
 
 	// Status Lifecycle status of a user's account
 	Status *AccountStatus `json:"status,omitempty"`
@@ -487,6 +451,3 @@ type CreateRelationshipJSONRequestBody = RelationshipTuple
 
 // UpdateUserProfileJSONRequestBody defines body for UpdateUserProfile for application/json ContentType.
 type UpdateUserProfileJSONRequestBody = UserUpdateRequest
-
-// UpdateUserAdminJSONRequestBody defines body for UpdateUserAdmin for application/json ContentType.
-type UpdateUserAdminJSONRequestBody = UserAdminUpdateRequest

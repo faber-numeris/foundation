@@ -25,7 +25,6 @@ export const ListUsersQueryParams = zod.object({
 })
 
 export const listUsersResponseItemsItemOneIdRegExp = new RegExp('^[0-9A-HJKMNP-TV-Z]{26}$');
-export const listUsersResponseItemsItemOneRoleDefault = `USER`;
 export const listUsersResponseItemsItemOneStatusDefault = `ACTIVE`;
 
 export const ListUsersResponse = zod.object({
@@ -33,7 +32,6 @@ export const ListUsersResponse = zod.object({
   "id": zod.string().regex(listUsersResponseItemsItemOneIdRegExp).describe('The user id'),
   "type": zod.enum(['USER', 'SERVICE_ACCOUNT', 'DEVICE']).describe('Principal type for extensibility'),
   "email": zod.email().describe('User\'s unique email address (login identifier)'),
-  "role": zod.enum(['ADMIN', 'USER']).default(listUsersResponseItemsItemOneRoleDefault).describe('Coarse-grained role assigned to a principal. Fine-grained permissions are evaluated via the Authorization (OpenFGA) endpoints.'),
   "status": zod.enum(['ACTIVE', 'LOCKED', 'DEACTIVATED']).default(listUsersResponseItemsItemOneStatusDefault).describe('Lifecycle status of a user\'s account')
 }).and(zod.object({
   "firstName": zod.string().optional().describe('User\'s first name'),
@@ -43,42 +41,6 @@ export const ListUsersResponse = zod.object({
 }))),
   "nextCursor": zod.string().optional().describe('Opaque cursor to fetch the next page, absent when there are no more results')
 })
-
-/**
- * Assigns a role and/or changes the account status (e.g. lock, unlock) of a user. Requires an administrative role.
- * @summary Update a user's role or account status
- */
-export const updateUserAdminPathIdRegExp = new RegExp('^[0-9A-HJKMNP-TV-Z]{26}$');
-
-
-export const UpdateUserAdminParams = zod.object({
-  "id": zod.string().regex(updateUserAdminPathIdRegExp).describe('User\'s unique identifier')
-})
-
-export const updateUserAdminBodyRoleDefault = `USER`;
-export const updateUserAdminBodyStatusDefault = `ACTIVE`;
-
-export const UpdateUserAdminBody = zod.object({
-  "role": zod.enum(['ADMIN', 'USER']).default(updateUserAdminBodyRoleDefault).describe('Coarse-grained role assigned to a principal. Fine-grained permissions are evaluated via the Authorization (OpenFGA) endpoints.'),
-  "status": zod.enum(['ACTIVE', 'LOCKED', 'DEACTIVATED']).default(updateUserAdminBodyStatusDefault).describe('Lifecycle status of a user\'s account')
-})
-
-export const updateUserAdminResponseOneIdRegExp = new RegExp('^[0-9A-HJKMNP-TV-Z]{26}$');
-export const updateUserAdminResponseOneRoleDefault = `USER`;
-export const updateUserAdminResponseOneStatusDefault = `ACTIVE`;
-
-export const UpdateUserAdminResponse = zod.object({
-  "id": zod.string().regex(updateUserAdminResponseOneIdRegExp).describe('The user id'),
-  "type": zod.enum(['USER', 'SERVICE_ACCOUNT', 'DEVICE']).describe('Principal type for extensibility'),
-  "email": zod.email().describe('User\'s unique email address (login identifier)'),
-  "role": zod.enum(['ADMIN', 'USER']).default(updateUserAdminResponseOneRoleDefault).describe('Coarse-grained role assigned to a principal. Fine-grained permissions are evaluated via the Authorization (OpenFGA) endpoints.'),
-  "status": zod.enum(['ACTIVE', 'LOCKED', 'DEACTIVATED']).default(updateUserAdminResponseOneStatusDefault).describe('Lifecycle status of a user\'s account')
-}).and(zod.object({
-  "firstName": zod.string().optional().describe('User\'s first name'),
-  "lastName": zod.string().optional().describe('User\'s last name'),
-  "locale": zod.string().optional().describe('User\'s locale'),
-  "timezone": zod.string().optional().describe('User\'s timezone')
-}))
 
 /**
  * Deactivates another user's account. Requires an administrative role.

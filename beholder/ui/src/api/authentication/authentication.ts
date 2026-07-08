@@ -29,14 +29,12 @@ export const RegisterUserBody = zod.object({
 }))
 
 export const registerUserResponseOneIdRegExp = new RegExp('^[0-9A-HJKMNP-TV-Z]{26}$');
-export const registerUserResponseOneRoleDefault = `USER`;
 export const registerUserResponseOneStatusDefault = `ACTIVE`;
 
 export const RegisterUserResponse = zod.object({
   "id": zod.string().regex(registerUserResponseOneIdRegExp).describe('The user id'),
   "type": zod.enum(['USER', 'SERVICE_ACCOUNT', 'DEVICE']).describe('Principal type for extensibility'),
   "email": zod.email().describe('User\'s unique email address (login identifier)'),
-  "role": zod.enum(['ADMIN', 'USER']).default(registerUserResponseOneRoleDefault).describe('Coarse-grained role assigned to a principal. Fine-grained permissions are evaluated via the Authorization (OpenFGA) endpoints.'),
   "status": zod.enum(['ACTIVE', 'LOCKED', 'DEACTIVATED']).default(registerUserResponseOneStatusDefault).describe('Lifecycle status of a user\'s account')
 }).and(zod.object({
   "firstName": zod.string().optional().describe('User\'s first name'),
@@ -67,7 +65,6 @@ export const LoginUserBody = zod.object({
 })
 
 export const loginUserResponseUserOneIdRegExp = new RegExp('^[0-9A-HJKMNP-TV-Z]{26}$');
-export const loginUserResponseUserOneRoleDefault = `USER`;
 export const loginUserResponseUserOneStatusDefault = `ACTIVE`;
 
 export const LoginUserResponse = zod.object({
@@ -79,7 +76,6 @@ export const LoginUserResponse = zod.object({
   "id": zod.string().regex(loginUserResponseUserOneIdRegExp).describe('The user id'),
   "type": zod.enum(['USER', 'SERVICE_ACCOUNT', 'DEVICE']).describe('Principal type for extensibility'),
   "email": zod.email().describe('User\'s unique email address (login identifier)'),
-  "role": zod.enum(['ADMIN', 'USER']).default(loginUserResponseUserOneRoleDefault).describe('Coarse-grained role assigned to a principal. Fine-grained permissions are evaluated via the Authorization (OpenFGA) endpoints.'),
   "status": zod.enum(['ACTIVE', 'LOCKED', 'DEACTIVATED']).default(loginUserResponseUserOneStatusDefault).describe('Lifecycle status of a user\'s account')
 }).and(zod.object({
   "firstName": zod.string().optional().describe('User\'s first name'),
@@ -98,7 +94,6 @@ export const RefreshAccessTokenBody = zod.object({
 })
 
 export const refreshAccessTokenResponseUserOneIdRegExp = new RegExp('^[0-9A-HJKMNP-TV-Z]{26}$');
-export const refreshAccessTokenResponseUserOneRoleDefault = `USER`;
 export const refreshAccessTokenResponseUserOneStatusDefault = `ACTIVE`;
 
 export const RefreshAccessTokenResponse = zod.object({
@@ -110,7 +105,6 @@ export const RefreshAccessTokenResponse = zod.object({
   "id": zod.string().regex(refreshAccessTokenResponseUserOneIdRegExp).describe('The user id'),
   "type": zod.enum(['USER', 'SERVICE_ACCOUNT', 'DEVICE']).describe('Principal type for extensibility'),
   "email": zod.email().describe('User\'s unique email address (login identifier)'),
-  "role": zod.enum(['ADMIN', 'USER']).default(refreshAccessTokenResponseUserOneRoleDefault).describe('Coarse-grained role assigned to a principal. Fine-grained permissions are evaluated via the Authorization (OpenFGA) endpoints.'),
   "status": zod.enum(['ACTIVE', 'LOCKED', 'DEACTIVATED']).default(refreshAccessTokenResponseUserOneStatusDefault).describe('Lifecycle status of a user\'s account')
 }).and(zod.object({
   "firstName": zod.string().optional().describe('User\'s first name'),

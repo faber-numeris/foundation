@@ -75,9 +75,6 @@ type ServerInterface interface {
 	// Get user by ID
 	// (GET /users/{id})
 	GetUserByID(w http.ResponseWriter, r *http.Request, id ULID)
-	// Update a user's role or account status
-	// (PATCH /users/{id})
-	UpdateUserAdmin(w http.ResponseWriter, r *http.Request, id ULID)
 }
 
 // Unimplemented server implementation that returns http.StatusNotImplemented for each endpoint.
@@ -201,12 +198,6 @@ func (_ Unimplemented) DeactivateUser(w http.ResponseWriter, r *http.Request, id
 // Get user by ID
 // (GET /users/{id})
 func (_ Unimplemented) GetUserByID(w http.ResponseWriter, r *http.Request, id ULID) {
-	w.WriteHeader(http.StatusNotImplemented)
-}
-
-// Update a user's role or account status
-// (PATCH /users/{id})
-func (_ Unimplemented) UpdateUserAdmin(w http.ResponseWriter, r *http.Request, id ULID) {
 	w.WriteHeader(http.StatusNotImplemented)
 }
 
@@ -756,38 +747,6 @@ func (siw *ServerInterfaceWrapper) GetUserByID(w http.ResponseWriter, r *http.Re
 	handler.ServeHTTP(w, r)
 }
 
-// UpdateUserAdmin operation middleware
-func (siw *ServerInterfaceWrapper) UpdateUserAdmin(w http.ResponseWriter, r *http.Request) {
-
-	var err error
-	_ = err
-
-	// ------------- Path parameter "id" -------------
-	var id ULID
-
-	err = runtime.BindStyledParameterWithOptions("simple", "id", chi.URLParam(r, "id"), &id, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true, Type: "string", Format: ""})
-	if err != nil {
-		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "id", Err: err})
-		return
-	}
-
-	ctx := r.Context()
-
-	ctx = context.WithValue(ctx, BearerAuthScopes, []string{})
-
-	r = r.WithContext(ctx)
-
-	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		siw.Handler.UpdateUserAdmin(w, r, id)
-	}))
-
-	for _, middleware := range siw.HandlerMiddlewares {
-		handler = middleware(handler)
-	}
-
-	handler.ServeHTTP(w, r)
-}
-
 type UnescapedCookieParamError struct {
 	ParamName string
 	Err       error
@@ -960,9 +919,6 @@ func HandlerWithOptions(si ServerInterface, options ChiServerOptions) http.Handl
 	})
 	r.Group(func(r chi.Router) {
 		r.Get(options.BaseURL+"/users/{id}", wrapper.GetUserByID)
-	})
-	r.Group(func(r chi.Router) {
-		r.Patch(options.BaseURL+"/users/{id}", wrapper.UpdateUserAdmin)
 	})
 
 	return r
