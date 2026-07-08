@@ -47,6 +47,12 @@
 
 - initial commit
 
+## beholder/v0.1.1 (2026-07-08)
+
+### Fix
+
+- tag generation format
+
 ## beholder/v0.1.0 (2026-07-08)
 
 ### Feat
