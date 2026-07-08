@@ -2,3 +2,5 @@ package: api
 output: api/api.spec.go
 generate:
   embedded-spec: true
+output-options:
+  name-normalizer: ToCamelCaseWithInitialisms

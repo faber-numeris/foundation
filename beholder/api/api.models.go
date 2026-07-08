@@ -141,14 +141,14 @@ type AccountStatus string
 
 // AuditEvent defines model for AuditEvent.
 type AuditEvent struct {
-	// ActorId Universally Unique Lexicographically Sortable Identifier
-	ActorId *ULID `json:"actorId,omitempty"`
+	// ActorID Universally Unique Lexicographically Sortable Identifier
+	ActorID *ULID `json:"actorId,omitempty"`
 
 	// EventType Category of a security-sensitive event captured in the audit log
 	EventType AuditEventType `json:"eventType"`
 
-	// Id Universally Unique Lexicographically Sortable Identifier
-	Id ULID `json:"id"`
+	// ID Universally Unique Lexicographically Sortable Identifier
+	ID ULID `json:"id"`
 
 	// Metadata Event-specific contextual details
 	Metadata *map[string]interface{} `json:"metadata,omitempty"`
@@ -156,8 +156,8 @@ type AuditEvent struct {
 	// OccurredAt Timestamp at which the event occurred
 	OccurredAt time.Time `json:"occurredAt"`
 
-	// UserId Universally Unique Lexicographically Sortable Identifier
-	UserId *ULID `json:"userId,omitempty"`
+	// UserID Universally Unique Lexicographically Sortable Identifier
+	UserID *ULID `json:"userId,omitempty"`
 }
 
 // AuditEventList defines model for AuditEventList.
@@ -284,8 +284,8 @@ type User struct {
 	// FirstName User's first name
 	FirstName *string `json:"firstName,omitempty"`
 
-	// Id Universally Unique Lexicographically Sortable Identifier
-	Id ULID `json:"id"`
+	// ID Universally Unique Lexicographically Sortable Identifier
+	ID ULID `json:"id"`
 
 	// LastName User's last name
 	LastName *string `json:"lastName,omitempty"`
@@ -323,8 +323,8 @@ type UserBase struct {
 	// Email User's unique email address (login identifier)
 	Email openapi_types.Email `json:"email"`
 
-	// Id Universally Unique Lexicographically Sortable Identifier
-	Id ULID `json:"id"`
+	// ID Universally Unique Lexicographically Sortable Identifier
+	ID ULID `json:"id"`
 
 	// Role Coarse-grained role assigned to a principal. Fine-grained permissions are evaluated via the Authorization (OpenFGA) endpoints.
 	Role *Role `json:"role,omitempty"`
@@ -415,8 +415,8 @@ type bearerAuthContextKey string
 
 // ListAuditLogsParams defines parameters for ListAuditLogs.
 type ListAuditLogsParams struct {
-	// UserId Filter events by the affected user's ID
-	UserId *ULID `form:"userId,omitempty" json:"userId,omitempty"`
+	// UserID Filter events by the affected user's ID
+	UserID *ULID `form:"userId,omitempty" json:"userId,omitempty"`
 
 	// EventType Filter events by type
 	EventType *AuditEventType `form:"eventType,omitempty" json:"eventType,omitempty"`

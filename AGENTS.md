@@ -1,11 +1,11 @@
-# AGENTS.md — foundation/authn
+# AGENTS.md — foundation/beholder
 
 **Luciole Authentication Service API** — shared SDK published for all faber-numeris services (backend Go, frontend TS).
 
 ## Repo structure
 
 ```
-authn/
+beholder/
   openapi.yaml                      # Single source of truth (OpenAPI 3.1)
   justfile                          # All commands run through `just`
   .oapi-codegen.{models,server,spec}.yaml  # Go codegen configs (oapi-codegen v2.7.1)
@@ -22,6 +22,7 @@ authn/
 - **No `go.mod` in this repo.** Generated Go code is imported via the `github.com/faber-numeris/foundation` module path in backend repos.
 - **TypeScript client** uses native `fetch` (not axios), generates Zod schemas for validation.
 - **npm package** `@faber-numeris/authn-api` is published publicly (unscoped), imported by front-end projects.
+- **Go identifiers uppercase initialisms** (`ID`, `URL`, `UUID`, …) to satisfy revive's `var-naming` rule, via `output-options.name-normalizer: ToCamelCaseWithInitialisms` in the `.oapi-codegen.*.yaml` configs — configure naming there, never hand-patch generated code. See `skill-authn/SKILL.md` for details.
 
 ## Commands (all via `just`)
 
@@ -39,16 +40,16 @@ Partial regeneration (for speed):
 ## Generated code — never edit by hand
 
 Hands-off directories/files:
-- `authn/api/*.go` — oapi-codegen output
-- `authn/ui/src/api/**` — orval output (tags-split mode)
-- `authn/ui/src/models/**` — orval output
-- `authn/ui/dist/**` — TypeScript build artifacts
+- `beholder/api/*.go` — oapi-codegen output
+- `beholder/ui/src/api/**` — orval output (tags-split mode)
+- `beholder/ui/src/models/**` — orval output
+- `beholder/ui/dist/**` — TypeScript build artifacts
 
 All regenerated on every `just generate-openapi-stubs` run.
 
 ## Bruno tests
 
-Test collections in `authn/tests/` are run with the [Bruno](https://docs.usebruno.com) API client.
+Test collections in `beholder/tests/` are run with the [Bruno](https://docs.usebruno.com) API client.
 Three environments available: Local (`http://localhost:8080/v1`), Staging, Production.
 Some suites (e.g. register flow) use scripts to chain requests (generate random user → register → confirm → login → logout).
 The register suite integrates with Mailpit to fetch confirmation codes from emails.

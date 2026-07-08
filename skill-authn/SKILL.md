@@ -58,14 +58,15 @@ The register suite chains multiple Brunoscripts (generate random user via Faker 
 | Go models (`api/api.models.go`) | oapi-codegen v2.7.1 | `.oapi-codegen.models.yaml` | Backend repos via `github.com/faber-numeris/foundation` |
 | Go chi-server interface (`api/api.server.go`) | oapi-codegen v2.7.1 | `.oapi-codegen.server.yaml` | Backend repos |
 | Go embedded spec (`api/api.spec.go`) | oapi-codegen v2.7.1 | `.oapi-codegen.spec.yaml` | Backend repos |
-| TS types + fetch client (`ui/src/`) | orval v8.18.0 | `orval.config.mjs` (tags-split mode) | Frontend repos via `@faber-numeris/authn-api` |
-| TS Zod schemas (`ui/src/`) | orval v8.18.0 | `orval.config.mjs` (zod client) | Frontend repos |
+| TS types + fetch client (`ui/src/`) | orval v8.20.0 | `orval.config.mjs` (tags-split mode) | Frontend repos via `@faber-numeris/authn-api` |
+| TS Zod schemas (`ui/src/`) | orval v8.20.0 | `orval.config.mjs` (zod client, Zod v4 via `override.zod.version: 4`) | Frontend repos |
 
 ### Go specifics
 
 - Package name is always `api`
 - Server interface follows the `go-chi/chi/v5` router pattern
 - Orval generates: z.http client for fetch, types + schemas exported from the barrel `index.ts`
+- **Initialisms are uppercased to satisfy revive's `var-naming` rule** (`Id` → `ID`, `UserId` → `UserID`, `ActorId` → `ActorID`, etc). This is set via `output-options.name-normalizer: ToCamelCaseWithInitialisms` in all three `.oapi-codegen.*.yaml` configs — never hand-patch generated identifiers, regenerate instead. To recognize an initialism beyond oapi-codegen's [default list](https://github.com/oapi-codegen/oapi-codegen/blob/main/pkg/codegen/utils.go) (ID, URL, API, UUID, JSON, HTTP, …), add it to `output-options.additional-initialisms` in the relevant config file(s), not by editing generated output. JSON tags are unaffected — only the Go identifier changes, the wire format (`id`, `userId`) stays as defined in `openapi.yaml`.
 
 ## Sub-skills
 
