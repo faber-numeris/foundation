@@ -4,8 +4,8 @@ commitizen:
   name: cz_conventional_commits
   tag_format: v$version
   update_changelog_on_bump: true
-  version: 0.0.1
-  version_scheme: semver2
+  version: 0.1.0
   version_files:
-    - ui/package.json
-    - api/version.go
+  - ui/package.json
+  - api/version.go
+  version_scheme: semver2
