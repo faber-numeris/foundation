@@ -1,3 +1,10 @@
+## v0.1.4 (2026-07-08)
+
+### Fix
+
+- add go module declaration
+- remove account status from user
+
 ## v0.1.3 (2026-07-08)
 
 ### Fix
