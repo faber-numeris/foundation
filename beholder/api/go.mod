@@ -1,4 +1,4 @@
-module github.com/faber-numeris/foundation/beholder/api
+module github.com/faber-numeris/foundation/beholder
 
 go 1.26.1
 
