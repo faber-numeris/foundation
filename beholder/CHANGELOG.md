@@ -47,6 +47,12 @@
 
 - initial commit
 
+## beholder/v0.1.3 (2026-07-08)
+
+### Fix
+
+- directory and package structure
+
 ## beholder/v0.1.2 (2026-07-08)
 
 ### Fix
