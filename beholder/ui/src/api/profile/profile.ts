@@ -15,13 +15,12 @@ import * as zod from 'zod';
  * @summary Get user profile
  */
 export const getUserProfileResponseOneIdRegExp = new RegExp('^[0-9A-HJKMNP-TV-Z]{26}$');
-export const getUserProfileResponseOneStatusDefault = `ACTIVE`;
+
 
 export const GetUserProfileResponse = zod.object({
   "id": zod.string().regex(getUserProfileResponseOneIdRegExp).describe('The user id'),
   "type": zod.enum(['USER', 'SERVICE_ACCOUNT', 'DEVICE']).describe('Principal type for extensibility'),
-  "email": zod.email().describe('User\'s unique email address (login identifier)'),
-  "status": zod.enum(['ACTIVE', 'LOCKED', 'DEACTIVATED']).default(getUserProfileResponseOneStatusDefault).describe('Lifecycle status of a user\'s account')
+  "email": zod.email().describe('User\'s unique email address (login identifier)')
 }).and(zod.object({
   "firstName": zod.string().optional().describe('User\'s first name'),
   "lastName": zod.string().optional().describe('User\'s last name'),
@@ -41,13 +40,12 @@ export const UpdateUserProfileBody = zod.object({
 })
 
 export const updateUserProfileResponseOneIdRegExp = new RegExp('^[0-9A-HJKMNP-TV-Z]{26}$');
-export const updateUserProfileResponseOneStatusDefault = `ACTIVE`;
+
 
 export const UpdateUserProfileResponse = zod.object({
   "id": zod.string().regex(updateUserProfileResponseOneIdRegExp).describe('The user id'),
   "type": zod.enum(['USER', 'SERVICE_ACCOUNT', 'DEVICE']).describe('Principal type for extensibility'),
-  "email": zod.email().describe('User\'s unique email address (login identifier)'),
-  "status": zod.enum(['ACTIVE', 'LOCKED', 'DEACTIVATED']).default(updateUserProfileResponseOneStatusDefault).describe('Lifecycle status of a user\'s account')
+  "email": zod.email().describe('User\'s unique email address (login identifier)')
 }).and(zod.object({
   "firstName": zod.string().optional().describe('User\'s first name'),
   "lastName": zod.string().optional().describe('User\'s last name'),

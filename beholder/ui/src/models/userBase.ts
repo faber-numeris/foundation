@@ -7,7 +7,6 @@
  *
  * OpenAPI spec version: 0.1.0
  */
-import type { AccountStatus } from './accountStatus';
 import type { Ulid } from './ulid';
 import type { UserBaseType } from './userBaseType';
 
@@ -18,5 +17,4 @@ export interface UserBase {
   type: UserBaseType;
   /** User's unique email address (login identifier) */
   email: string;
-  status?: AccountStatus;
 }

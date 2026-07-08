@@ -29,13 +29,12 @@ export const RegisterUserBody = zod.object({
 }))
 
 export const registerUserResponseOneIdRegExp = new RegExp('^[0-9A-HJKMNP-TV-Z]{26}$');
-export const registerUserResponseOneStatusDefault = `ACTIVE`;
+
 
 export const RegisterUserResponse = zod.object({
   "id": zod.string().regex(registerUserResponseOneIdRegExp).describe('The user id'),
   "type": zod.enum(['USER', 'SERVICE_ACCOUNT', 'DEVICE']).describe('Principal type for extensibility'),
-  "email": zod.email().describe('User\'s unique email address (login identifier)'),
-  "status": zod.enum(['ACTIVE', 'LOCKED', 'DEACTIVATED']).default(registerUserResponseOneStatusDefault).describe('Lifecycle status of a user\'s account')
+  "email": zod.email().describe('User\'s unique email address (login identifier)')
 }).and(zod.object({
   "firstName": zod.string().optional().describe('User\'s first name'),
   "lastName": zod.string().optional().describe('User\'s last name'),
@@ -65,7 +64,7 @@ export const LoginUserBody = zod.object({
 })
 
 export const loginUserResponseUserOneIdRegExp = new RegExp('^[0-9A-HJKMNP-TV-Z]{26}$');
-export const loginUserResponseUserOneStatusDefault = `ACTIVE`;
+
 
 export const LoginUserResponse = zod.object({
   "accessToken": zod.string().describe('Opaque access token'),
@@ -75,8 +74,7 @@ export const LoginUserResponse = zod.object({
   "user": zod.object({
   "id": zod.string().regex(loginUserResponseUserOneIdRegExp).describe('The user id'),
   "type": zod.enum(['USER', 'SERVICE_ACCOUNT', 'DEVICE']).describe('Principal type for extensibility'),
-  "email": zod.email().describe('User\'s unique email address (login identifier)'),
-  "status": zod.enum(['ACTIVE', 'LOCKED', 'DEACTIVATED']).default(loginUserResponseUserOneStatusDefault).describe('Lifecycle status of a user\'s account')
+  "email": zod.email().describe('User\'s unique email address (login identifier)')
 }).and(zod.object({
   "firstName": zod.string().optional().describe('User\'s first name'),
   "lastName": zod.string().optional().describe('User\'s last name'),
@@ -94,7 +92,7 @@ export const RefreshAccessTokenBody = zod.object({
 })
 
 export const refreshAccessTokenResponseUserOneIdRegExp = new RegExp('^[0-9A-HJKMNP-TV-Z]{26}$');
-export const refreshAccessTokenResponseUserOneStatusDefault = `ACTIVE`;
+
 
 export const RefreshAccessTokenResponse = zod.object({
   "accessToken": zod.string().describe('Opaque access token'),
@@ -104,8 +102,7 @@ export const RefreshAccessTokenResponse = zod.object({
   "user": zod.object({
   "id": zod.string().regex(refreshAccessTokenResponseUserOneIdRegExp).describe('The user id'),
   "type": zod.enum(['USER', 'SERVICE_ACCOUNT', 'DEVICE']).describe('Principal type for extensibility'),
-  "email": zod.email().describe('User\'s unique email address (login identifier)'),
-  "status": zod.enum(['ACTIVE', 'LOCKED', 'DEACTIVATED']).default(refreshAccessTokenResponseUserOneStatusDefault).describe('Lifecycle status of a user\'s account')
+  "email": zod.email().describe('User\'s unique email address (login identifier)')
 }).and(zod.object({
   "firstName": zod.string().optional().describe('User\'s first name'),
   "lastName": zod.string().optional().describe('User\'s last name'),

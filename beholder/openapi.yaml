@@ -891,16 +891,6 @@ components:
       description: Universally Unique Lexicographically Sortable Identifier
       example: 01H8R5X7X9Y2Z4W6V8T0S1Q2R
 
-    AccountStatus:
-      type: string
-      enum:
-        - ACTIVE
-        - LOCKED
-        - DEACTIVATED
-      default: ACTIVE
-      description: Lifecycle status of a user's account
-      example: ACTIVE
-
     UserBase:
       type: object
       required:
@@ -923,9 +913,6 @@ components:
           format: email
           description: User's unique email address (login identifier)
           example: user@example.com
-
-        status:
-          $ref: '#/components/schemas/AccountStatus'
 
     UserCredentials:
       type: object

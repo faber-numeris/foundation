@@ -8,7 +8,6 @@
  * OpenAPI spec version: 0.1.0
  */
 
-export * from './accountStatus';
 export * from './auditEvent';
 export * from './auditEventList';
 export * from './auditEventMetadata';

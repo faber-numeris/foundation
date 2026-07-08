@@ -13,27 +13,6 @@ const (
 	BearerAuthScopes bearerAuthContextKey = "BearerAuth.Scopes"
 )
 
-// Defines values for AccountStatus.
-const (
-	ACTIVE      AccountStatus = "ACTIVE"
-	DEACTIVATED AccountStatus = "DEACTIVATED"
-	LOCKED      AccountStatus = "LOCKED"
-)
-
-// Valid indicates whether the value is a known member of the AccountStatus enum.
-func (e AccountStatus) Valid() bool {
-	switch e {
-	case ACTIVE:
-		return true
-	case DEACTIVATED:
-		return true
-	case LOCKED:
-		return true
-	default:
-		return false
-	}
-}
-
 // Defines values for AuditEventType.
 const (
 	PASSWORDCHANGED        AuditEventType = "PASSWORD_CHANGED"
@@ -117,9 +96,6 @@ func (e UserBaseType) Valid() bool {
 		return false
 	}
 }
-
-// AccountStatus Lifecycle status of a user's account
-type AccountStatus string
 
 // AuditEvent defines model for AuditEvent.
 type AuditEvent struct {
@@ -272,9 +248,6 @@ type User struct {
 	// Locale User's locale
 	Locale *string `json:"locale,omitempty"`
 
-	// Status Lifecycle status of a user's account
-	Status *AccountStatus `json:"status,omitempty"`
-
 	// Timezone User's timezone
 	Timezone *string `json:"timezone,omitempty"`
 
@@ -292,9 +265,6 @@ type UserBase struct {
 
 	// ID Universally Unique Lexicographically Sortable Identifier
 	ID ULID `json:"id"`
-
-	// Status Lifecycle status of a user's account
-	Status *AccountStatus `json:"status,omitempty"`
 
 	// Type Principal type for extensibility
 	Type UserBaseType `json:"type"`

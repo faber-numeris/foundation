@@ -25,14 +25,13 @@ export const ListUsersQueryParams = zod.object({
 })
 
 export const listUsersResponseItemsItemOneIdRegExp = new RegExp('^[0-9A-HJKMNP-TV-Z]{26}$');
-export const listUsersResponseItemsItemOneStatusDefault = `ACTIVE`;
+
 
 export const ListUsersResponse = zod.object({
   "items": zod.array(zod.object({
   "id": zod.string().regex(listUsersResponseItemsItemOneIdRegExp).describe('The user id'),
   "type": zod.enum(['USER', 'SERVICE_ACCOUNT', 'DEVICE']).describe('Principal type for extensibility'),
-  "email": zod.email().describe('User\'s unique email address (login identifier)'),
-  "status": zod.enum(['ACTIVE', 'LOCKED', 'DEACTIVATED']).default(listUsersResponseItemsItemOneStatusDefault).describe('Lifecycle status of a user\'s account')
+  "email": zod.email().describe('User\'s unique email address (login identifier)')
 }).and(zod.object({
   "firstName": zod.string().optional().describe('User\'s first name'),
   "lastName": zod.string().optional().describe('User\'s last name'),

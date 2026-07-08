@@ -22,13 +22,12 @@ export const GetUserByIDParams = zod.object({
 })
 
 export const getUserByIDResponseOneIdRegExp = new RegExp('^[0-9A-HJKMNP-TV-Z]{26}$');
-export const getUserByIDResponseOneStatusDefault = `ACTIVE`;
+
 
 export const GetUserByIDResponse = zod.object({
   "id": zod.string().regex(getUserByIDResponseOneIdRegExp).describe('The user id'),
   "type": zod.enum(['USER', 'SERVICE_ACCOUNT', 'DEVICE']).describe('Principal type for extensibility'),
-  "email": zod.email().describe('User\'s unique email address (login identifier)'),
-  "status": zod.enum(['ACTIVE', 'LOCKED', 'DEACTIVATED']).default(getUserByIDResponseOneStatusDefault).describe('Lifecycle status of a user\'s account')
+  "email": zod.email().describe('User\'s unique email address (login identifier)')
 }).and(zod.object({
   "firstName": zod.string().optional().describe('User\'s first name'),
   "lastName": zod.string().optional().describe('User\'s last name'),
