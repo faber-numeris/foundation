@@ -168,22 +168,6 @@ type LoginRequest struct {
 	Password string `json:"password"`
 }
 
-// LoginResponse defines model for LoginResponse.
-type LoginResponse struct {
-	// AccessToken Opaque access token
-	AccessToken string `json:"accessToken"`
-
-	// ExpiresIn Token expiration time in seconds
-	ExpiresIn int `json:"expiresIn"`
-
-	// RefreshToken Opaque refresh token, rotated on each use
-	RefreshToken string `json:"refreshToken"`
-
-	// TokenType Token type
-	TokenType string `json:"tokenType"`
-	User      User   `json:"user"`
-}
-
 // MessageResponse defines model for MessageResponse.
 type MessageResponse struct {
 	// Message Response message
@@ -226,6 +210,21 @@ type RelationshipTuple struct {
 // RelationshipTupleList defines model for RelationshipTupleList.
 type RelationshipTupleList struct {
 	Items []RelationshipTuple `json:"items"`
+}
+
+// TokenResponse defines model for TokenResponse.
+type TokenResponse struct {
+	// AccessToken Opaque access token
+	AccessToken string `json:"accessToken"`
+
+	// ExpiresIn Token expiration time in seconds
+	ExpiresIn int `json:"expiresIn"`
+
+	// RefreshToken Opaque refresh token, rotated on each use
+	RefreshToken string `json:"refreshToken"`
+
+	// TokenType Token type
+	TokenType string `json:"tokenType"`
 }
 
 // ULID Universally Unique Lexicographically Sortable Identifier
@@ -409,6 +408,9 @@ type RefreshAccessTokenJSONRequestBody = RefreshTokenRequest
 
 // RegisterUserJSONRequestBody defines body for RegisterUser for application/json ContentType.
 type RegisterUserJSONRequestBody = UserCreateRequest
+
+// IssueTokenJSONRequestBody defines body for IssueToken for application/json ContentType.
+type IssueTokenJSONRequestBody = LoginRequest
 
 // CheckPermissionJSONRequestBody defines body for CheckPermission for application/json ContentType.
 type CheckPermissionJSONRequestBody = CheckRequest

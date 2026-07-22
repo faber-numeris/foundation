@@ -8,7 +8,13 @@
  * OpenAPI spec version: 0.1.0
  */
 
-export interface PasswordResetRequest {
-  /** User's email address */
-  email: string;
+export interface TokenResponse {
+  /** Opaque access token */
+  accessToken: string;
+  /** Token type */
+  tokenType: string;
+  /** Token expiration time in seconds */
+  expiresIn: number;
+  /** Opaque refresh token, rotated on each use */
+  refreshToken: string;
 }
