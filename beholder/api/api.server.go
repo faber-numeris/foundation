@@ -21,7 +21,7 @@ type ServerInterface interface {
 	// Confirm user registration
 	// (GET /authn/confirm)
 	ConfirmUserRegistration(w http.ResponseWriter, r *http.Request, params ConfirmUserRegistrationParams)
-	// User login
+	// User login (browser / SPA session)
 	// (POST /authn/login)
 	LoginUser(w http.ResponseWriter, r *http.Request)
 	// User logout
@@ -39,6 +39,9 @@ type ServerInterface interface {
 	// Register a new user
 	// (POST /authn/register)
 	RegisterUser(w http.ResponseWriter, r *http.Request)
+	// User login (mobile / server-to-server)
+	// (POST /authn/token)
+	IssueToken(w http.ResponseWriter, r *http.Request)
 	// Check a permission
 	// (POST /authz/check)
 	CheckPermission(w http.ResponseWriter, r *http.Request)
@@ -93,7 +96,7 @@ func (_ Unimplemented) ConfirmUserRegistration(w http.ResponseWriter, r *http.Re
 	w.WriteHeader(http.StatusNotImplemented)
 }
 
-// User login
+// User login (browser / SPA session)
 // (POST /authn/login)
 func (_ Unimplemented) LoginUser(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusNotImplemented)
@@ -126,6 +129,12 @@ func (_ Unimplemented) RefreshAccessToken(w http.ResponseWriter, r *http.Request
 // Register a new user
 // (POST /authn/register)
 func (_ Unimplemented) RegisterUser(w http.ResponseWriter, r *http.Request) {
+	w.WriteHeader(http.StatusNotImplemented)
+}
+
+// User login (mobile / server-to-server)
+// (POST /authn/token)
+func (_ Unimplemented) IssueToken(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusNotImplemented)
 }
 
@@ -428,6 +437,20 @@ func (siw *ServerInterfaceWrapper) RegisterUser(w http.ResponseWriter, r *http.R
 
 	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		siw.Handler.RegisterUser(w, r)
+	}))
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		handler = middleware(handler)
+	}
+
+	handler.ServeHTTP(w, r)
+}
+
+// IssueToken operation middleware
+func (siw *ServerInterfaceWrapper) IssueToken(w http.ResponseWriter, r *http.Request) {
+
+	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		siw.Handler.IssueToken(w, r)
 	}))
 
 	for _, middleware := range siw.HandlerMiddlewares {
@@ -883,6 +906,9 @@ func HandlerWithOptions(si ServerInterface, options ChiServerOptions) http.Handl
 	})
 	r.Group(func(r chi.Router) {
 		r.Post(options.BaseURL+"/authn/register", wrapper.RegisterUser)
+	})
+	r.Group(func(r chi.Router) {
+		r.Post(options.BaseURL+"/authn/token", wrapper.IssueToken)
 	})
 	r.Group(func(r chi.Router) {
 		r.Post(options.BaseURL+"/authz/check", wrapper.CheckPermission)

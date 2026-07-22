@@ -153,8 +153,13 @@ paths:
     post:
       tags:
         - Authentication
-      summary: User login
-      description: Authenticates a user and returns an opaque access token
+      summary: User login (browser / SPA session)
+      description: |
+        Authenticates a user for browser-based clients (SPAs). The access token is never
+        exposed in the response body — it is issued as an HttpOnly cookie so that page
+        JavaScript cannot read it, which prevents XSS-based token theft. Mobile apps and
+        server-to-server clients that manage their own secure token storage should use
+        `POST /authn/token` instead, which returns the token in the response body.
       operationId: loginUser
       requestBody:
         required: true
@@ -163,12 +168,84 @@ paths:
             schema:
               $ref: '#/components/schemas/LoginRequest'
       responses:
-        '200':
-          description: Login successful
+        '201':
+          description: Login successful - session cookie issued
+          headers:
+            Set-Cookie:
+              schema:
+                type: string
+              description: HttpOnly, Secure session cookie carrying the opaque access token
+              example: access_token=a4f8b9e2c1d04e5f8a9b2c3d4e5f6a7b; Path=/; Secure; HttpOnly; SameSite=Strict; Max-Age=3600
+            Cache-Control:
+              schema:
+                type: string
+              description: Prevents caches/history from storing the authenticated response
+              example: no-store
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/LoginResponse'
+                $ref: '#/components/schemas/MessageResponse'
+              example:
+                message: Authenticated successfully
+        '400':
+          description: Invalid request data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Invalid credentials
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '423':
+          description: Account locked due to repeated failed login attempts
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '429':
+          description: Too many login attempts - rate limited
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
+
+  /authn/token:
+    post:
+      tags:
+        - Authentication
+      summary: User login (mobile / server-to-server)
+      description: |
+        Authenticates a user or service and returns an opaque access token and refresh
+        token in the response body. Intended for native mobile apps and machine-to-machine
+        clients that store tokens in OS-level secure storage (Keychain, Keystore, a secrets
+        vault) rather than a browser document, so they are not exposed to DOM-based XSS.
+        Browser-based SPAs should use `POST /authn/login` instead, which never returns the
+        token in the body.
+      operationId: issueToken
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+      responses:
+        '201':
+          description: Token issued successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenResponse'
         '400':
           description: Invalid request data
           content:
@@ -221,7 +298,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/LoginResponse'
+                $ref: '#/components/schemas/TokenResponse'
         '400':
           description: Invalid request data
           content:
@@ -1008,19 +1085,18 @@ components:
           description: User's password
           example: SecurePass123!
 
-    LoginResponse:
+    TokenResponse:
       type: object
       required:
         - accessToken
         - tokenType
         - expiresIn
         - refreshToken
-        - user
       properties:
         accessToken:
           type: string
           description: Opaque access token
-          example: 5f9a7b2c4e3d1a6f8b9c0e2d4f6a8c1b
+          example: 01KY51C2PHK2P5D7R3CPM5NWFD
         tokenType:
           type: string
           description: Token type
@@ -1033,8 +1109,6 @@ components:
           type: string
           description: Opaque refresh token, rotated on each use
           example: 8c1b5f9a7b2c4e3d1a6f8b9c0e2d4f6a
-        user:
-          $ref: '#/components/schemas/User'
 
     RefreshTokenRequest:
       type: object

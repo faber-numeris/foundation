@@ -47,6 +47,18 @@
 
 - initial commit
 
+## beholder/v0.1.4 (2026-07-22)
+
+### Fix
+
+- move auth_token to cookies
+
+## beholder/v0.1.3 (2026-07-08)
+
+### Fix
+
+- directory and package structure
+
 ## beholder/v0.1.2 (2026-07-08)
 
 ### Fix
