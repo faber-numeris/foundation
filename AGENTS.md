@@ -47,11 +47,3 @@ Hands-off directories/files:
 
 All regenerated on every `just generate-openapi-stubs` run.
 
-## Bruno tests
-
-Test collections in `beholder/tests/` are run with the [Bruno](https://docs.usebruno.com) API client.
-Three environments available: Local (`http://localhost:8080/v1`), Staging, Production.
-Some suites (e.g. register flow) use scripts to chain requests (generate random user → register → confirm → login → logout).
-The register suite integrates with Mailpit to fetch confirmation codes from emails.
-
-
